@@ -13,7 +13,7 @@ public:
 	*
 	* @param 
 	*/
-	ShortestProcessFirst(); // params TBD
+	ShortestProcessFirst(float bD, float pW, std::vector<Process> processList);
 
 	// Other constructors, assignment, disallow copy/move
 	ShortestProcessFirst(const ShortestProcessFirst &orig) = delete;
@@ -28,10 +28,21 @@ public:
 		//
 	}
 
+	std::vector<Process> getProcessList();
+	std::vector<Process> getBlockedProcessList();
+	std::vector<Process> getReadyProcessList();
+	float computePredictionValue(float w, float a, float t);
+	void chooseNextProcess(std::vector<Process> runningProcess, std::vector<Process> readyProcesses, std::vector<Process> blockedProcess, float cPV);
+
 private:
 
-	std::priority_queue<Process> blockedProcessList;
-	std::priority_queue<Process> readyProcessList;
+	float blockDuration = 0;
+	float predictionWeight = 0;
+	std::vector<Process> processList;
+	//std::priority_queue<Process> blockedProcessList;
+	//std::priority_queue<Process> readyProcessList;
+	std::vector<Process> blockedProcessList;
+	std::vector<Process> readyProcessList;
 
 };
 

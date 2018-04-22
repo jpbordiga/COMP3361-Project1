@@ -1,6 +1,8 @@
 #ifndef SYSTEMCLOCK_HPP
 #define SYSTEMCLOCK_HPP
 
+#include <iostream>
+
 class SystemClock {
 
 public:
@@ -25,9 +27,18 @@ public:
 		//
 	}
 
+	void startTime();
+	float getTime();
+	float getTimeUnit();
+	void setTime(float t);
+	void progressSystemTime();
+
+
+
 private:
 
-
+	float current_time;
+	float timeUnit = 0.0000001;
 
 };
 
