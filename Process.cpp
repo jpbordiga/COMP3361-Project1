@@ -1,3 +1,9 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
 #include <stdexcept>
 #include <iostream>
 #include <fstream>
@@ -12,25 +18,66 @@ Process::Process() {
 
 	processName = "NULL";
 	arrivalTime = 0;
-	std::vector<float> null;
-	runTimes = null;
+	runTimes = getRunTimes();
+        processNumber = 0;
+        
+}
+
+Process::Process(const Process &orig) {
+
+	processName = orig.processName;
+	arrivalTime = orig.arrivalTime;
+	runTimes = orig.runTimes;
+	idle = orig.idle;
+	currentTimeSlice = orig.currentTimeSlice;
+        processNumber = orig.processNumber;
 
 }
 
-Process::Process(std::string pN, float aT, std::vector<float> rT) {
+Process::Process(Process &orig) {
 
+	processName = orig.processName;
+	arrivalTime = orig.arrivalTime;
+	runTimes = orig.runTimes;
+	idle = orig.idle;
+	currentTimeSlice = orig.currentTimeSlice;
+        processNumber = orig.processNumber;
+
+}
+
+Process Process::operator=(const Process &orig) {
+	
+	processName = orig.processName;
+	arrivalTime = orig.arrivalTime;
+	runTimes = orig.runTimes;
+	idle = orig.idle;
+	currentTimeSlice = orig.currentTimeSlice;
+        processNumber = orig.processNumber;
+	return *this;
+
+}
+
+Process Process::operator=(Process &orig) {
+	
+	processName = orig.processName;
+	arrivalTime = orig.arrivalTime;
+	runTimes = orig.runTimes;
+	idle = orig.idle;
+	currentTimeSlice = orig.currentTimeSlice;
+        processNumber = orig.processNumber;
+	return *this;
+
+}
+
+
+Process::Process(std::string pN, float aT, std::vector<float> &rT) {
+	
 	processName = pN;
 	arrivalTime = aT;
-	runTimes = rT;
 
-	std::cout << processName << "\n";
-	std::cout << arrivalTime << "\n";
-
-	for (int i = 0; i < this->getRunTimes().size(); ++i) {
-		std::cout << this->getRunTimes().at(i) << " ";
+	for (int i = 0; i < rT.size(); ++i) {
+		runTimes.push_back(rT[i]);
 	}
-
-	std::cout << "\n";
 
 }
 
@@ -47,9 +94,11 @@ std::vector<float> Process::getRunTimes() {
 }
 
 void Process::setIdle(bool i) {
-
 	idle = i;
+}
 
+void Process::setBlocked(bool i) {
+	blocked = i;
 }
 
 void Process::progressTimeSliceNumber() {
@@ -59,3 +108,16 @@ void Process::progressTimeSliceNumber() {
 int Process::getTimeSliceNumber() {
 	return this->currentTimeSlice;
 }
+
+int Process::getProcessNumber() {
+    return this->processNumber;
+}
+
+bool Process::isIdle(){
+    return this->idle;
+}
+
+bool Process::isBlocked(){
+    return this->blocked;
+}
+
