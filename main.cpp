@@ -38,10 +38,15 @@ namespace {  // unnamed namespace
 
 int main(int argc, char* argv[]) {
 	
-    std::fstream inputFile;
-    float blockDuration = 5;
-    float predictionWeight = 0.25;
+    std::ifstream inputFile;
+    int blockDuration = 0;
+    int predictionWeight = 0;
 
+    cout << "argc = " << argc << "\n";
+    for (int i = 0; i < argc; ++i) {
+        cout << "argv[" << i << "] = " << argv[i] << "\n";
+    }
+    
     if (argc != 2) {
 	std::cerr << "Usage: Program1 input_file\n";
 	exit(1);
@@ -53,43 +58,48 @@ int main(int argc, char* argv[]) {
 	std::cerr << "ERROR: failed to open input file: " << argv[1] << "\n";
 	exit(2);
     }
+    
+    blockDuration = char_traits<char>::to_int_type(*argv[2]);
+    predictionWeight = char_traits<char>::to_int_type(*argv[3]);
+    
+    std::cout << blockDuration << "\n";
+    std::cout << predictionWeight << "\n";
 
     std::cout << argv[1] << " " << blockDuration << " " << predictionWeight << "\n";
     
-	std::string currentLine;
-	std::string processName;
-	std::vector<Process> processList;
-	float arrivalTime = 0;
+    std::string currentLine;
+    std::string processName;
+    std::vector<Process> processList;
+    float arrivalTime = 0;
 
-	while (std::getline(inputFile, currentLine)) {
+    while (std::getline(inputFile, currentLine)) {
 
-		std::istringstream sStream(currentLine);
-		std::vector<float> runTimes;
+        std::istringstream sStream(currentLine);
+        std::vector<float> runTimes;
 
-		sStream >> processName;
-		sStream >> arrivalTime;
+	sStream >> processName;
+	sStream >> arrivalTime;
 
-		while (true) {
+	while (true) {
 
-			if (sStream.eof()) {
-				break;
-			}
-			else {
+            if (sStream.eof()) {
+		break;
+            } else {
 
-                            float runTime = 0;
-                            sStream >> runTime;
-                            runTimes.push_back(runTime);
+                float runTime = 0;
+                sStream >> runTime;
+                runTimes.push_back(runTime);
 
-			}
-
-		}
-
-		Process p(processName, arrivalTime, runTimes);
-		processList.push_back(p);
+            }
 
 	}
 
-    ShortestProcessFirst sPF(blockDuration, predictionWeight, processList);
+	Process p(processName, arrivalTime, runTimes);
+	processList.push_back(p);
+
+    }
+
+    //ShortestProcessFirst sPF(blockDuration, predictionWeight, processList);
     
     return 0;
 }
